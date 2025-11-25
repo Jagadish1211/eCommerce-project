@@ -28,13 +28,20 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  // log the error server-side
+  console.error(err.stack);
 
-  // render the error page
+  // set status
   res.status(err.status || 500);
-  res.render('error');
+
+  // decide JSON vs HTML response
+  const wantsJson = req.accepts('json') || req.xhr || (req.headers && req.headers.accept && req.headers.accept.indexOf('application/json') !== -1);
+
+  if (wantsJson) {
+    const payload = { message: err.message };
+    if (req.app.get('env') === 'development') payload.stack = err.stack;
+    return res.json(payload);
+  }
 });
 
 module.exports = app;
