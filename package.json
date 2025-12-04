@@ -2,6 +2,7 @@
   "name": "ecommerce-project",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "start": "nodemon ./bin/www"
   },
@@ -15,7 +16,8 @@
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
     "pg-promise": "^12.2.0",
-    "prisma": "^6.18.0"
+    "prisma": "^6.18.0",
+    "redis": "^5.10.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
