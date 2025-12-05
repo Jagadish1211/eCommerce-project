@@ -1,0 +1,8 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Run lint-staged (ESLint + Prettier)
+npx lint-staged
+
+# Run TypeScript type checking
+npm run type-check
