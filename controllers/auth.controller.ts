@@ -3,19 +3,22 @@ import bcrypt from 'bcrypt'
 import type { registerNewUserRequestBody } from '../interfaces/auth.ts'
 import { isValidEmail, isValidPassword } from '../validators/auth.ts'
 import prisma from '../prisma/prismaClient.ts'
+import { normalizeEmail } from '../utils/index.ts'
 
 export const registerNewUser = async (req: Request, res: Response) => {
   try {
     const { email, password, name, phoneNumber } =
       req.body as registerNewUserRequestBody
 
-    if (!email || !password) {
+    const normalizedEmail = normalizeEmail(email)
+
+    if (!normalizedEmail || !password) {
       return res.status(400).json({
         message: 'Email and password are required',
       })
     }
 
-    if (!isValidEmail(email)) {
+    if (!isValidEmail(normalizedEmail)) {
       return res.status(400).json({
         message: 'Invalid email format',
       })
@@ -29,7 +32,7 @@ export const registerNewUser = async (req: Request, res: Response) => {
     }
 
     const existingUser = await prisma.user.findUnique({
-      where: { email },
+      where: { normalizedEmail },
     })
 
     if (existingUser) {
@@ -42,7 +45,7 @@ export const registerNewUser = async (req: Request, res: Response) => {
 
     const user = await prisma.user.create({
       data: {
-        email,
+        email: normalizedEmail,
         password: hashedPassword,
         name,
         phone: phoneNumber,
