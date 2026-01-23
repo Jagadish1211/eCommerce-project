@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url'
 
 // route imports
 import indexRouter from './routes/index.ts'
-import usersRouter from './routes/users.ts'
+import authRouter from './routes/auth.ts'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -24,7 +24,7 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/', indexRouter)
-app.use('/users', usersRouter)
+app.use('/auth', authRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
