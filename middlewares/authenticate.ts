@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 // middleware to verify JWT token
 
-export const verifyToken = (req: Request, res: Response, next: any) => {
+export const authenticate = (req: Request, res: Response, next: any) => {
   const authHeader = req.headers?.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {

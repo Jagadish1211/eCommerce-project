@@ -28,6 +28,18 @@ model User {
   cart      Cart?
   orders    Order[]
   payments  Payment[]
+  refreshToken refreshToken?
+}
+
+// token model
+model refreshToken {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  token     String   @unique
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  user User @relation(fields: [userId], references: [id])
 }
 
 // Address model
